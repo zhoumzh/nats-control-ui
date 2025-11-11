@@ -1,0 +1,209 @@
+// Global styles
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background-color: var(--el-bg-color-page);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+// Utility classes
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.h-full {
+  height: 100%;
+}
+
+// Custom scrollbar
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--el-bg-color-page);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--el-border-color);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--el-border-color-dark);
+}
+
+// Animation utilities
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: transform 0.3s ease;
+}
+
+.slide-enter-from {
+  transform: translateX(-100%);
+}
+
+.slide-leave-to {
+  transform: translateX(100%);
+}
+
+// Element Plus customizations
+.el-card {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+  .el-card__header {
+    border-bottom: 1px solid var(--el-border-color-lighter);
+    padding: 18px 20px;
+    font-weight: 500;
+  }
+
+  .el-card__body {
+    padding: 20px;
+  }
+}
+
+.el-button {
+  border-radius: 6px;
+  font-weight: 500;
+
+  &.el-button--primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+  }
+
+  &.el-button--success {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    border: none;
+  }
+}
+
+.el-table {
+  .el-table__header {
+    th {
+      background-color: var(--el-bg-color-page);
+      font-weight: 500;
+    }
+  }
+
+  .el-table__row {
+    &:hover {
+      background-color: var(--el-bg-color-page);
+    }
+  }
+}
+
+.el-menu {
+  border-right: none;
+
+  .el-menu-item {
+    border-radius: 6px;
+    margin: 4px 8px;
+    width: calc(100% - 16px);
+
+    &:hover {
+      background-color: var(--el-color-primary-light-9);
+      color: var(--el-color-primary);
+    }
+
+    &.is-active {
+      background-color: var(--el-color-primary);
+      color: white;
+
+      &::after {
+        display: none;
+      }
+    }
+  }
+}
+
+// Dark mode improvements
+.dark {
+  .el-card {
+    background-color: var(--el-bg-color);
+    border-color: var(--el-border-color-dark);
+  }
+
+  .el-table {
+    background-color: var(--el-bg-color);
+
+    .el-table__header {
+      th {
+        background-color: var(--el-bg-color-page);
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .el-table {
+    font-size: 12px;
+  }
+
+  .el-pagination {
+    .el-pagination__sizes {
+      display: none;
+    }
+  }
+}
+
+// Custom component styles
+.status-badge {
+  &.active {
+    background: linear-gradient(135deg, #67c23a 0%, #85ce61 100%);
+    color: white;
+  }
+
+  &.disabled {
+    background: linear-gradient(135deg, #f56c6c 0%, #f78989 100%);
+    color: white;
+  }
+}
+
+.monospace {
+  font-family: 'SF Mono', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+}
