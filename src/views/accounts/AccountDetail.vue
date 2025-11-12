@@ -52,10 +52,7 @@
 
                 <el-descriptions-item label="所属集群">
                   <div class="cluster-field">
-                    <el-tag
-                      v-if="getClusterDisplayName(account) !== '缺失'"
-                      size="small"
-                    >
+                    <el-tag v-if="getClusterDisplayName(account) !== '缺失'" size="small">
                       {{ getClusterDisplayName(account) }}
                     </el-tag>
                     <span v-else class="no-cluster">缺失</span>
@@ -746,10 +743,7 @@ const loadAccount = async () => {
     await loadJWT()
 
     // Load user count and JWT task count
-    await Promise.all([
-      loadUserCount(),
-      loadJWTTaskCount()
-    ])
+    await Promise.all([loadUserCount(), loadJWTTaskCount()])
   } catch (error) {
     console.error('加载账户详情失败:', error)
     ElMessage.error('加载账户详情失败')
@@ -760,7 +754,7 @@ const loadAccount = async () => {
 
 const loadUserCount = async () => {
   if (!account.value) return
-  
+
   try {
     userCount.value = await accountApi.getAccountUserCount(account.value.id)
   } catch (error) {
@@ -771,7 +765,7 @@ const loadUserCount = async () => {
 
 const loadJWTTaskCount = async () => {
   if (!account.value) return
-  
+
   try {
     jwtTaskCount.value = await accountApi.getJWTTaskCountByPublicKey(account.value.public_key)
   } catch (error) {

@@ -520,8 +520,6 @@ const handleCopyToClipboard = async (text: string) => {
   }
 }
 
-
-
 const formatClusterAddress = (cluster: any) => {
   if (!cluster || !cluster.host) return '未配置'
 

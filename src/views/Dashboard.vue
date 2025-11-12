@@ -185,7 +185,11 @@
                 {{ jetstream.status }}
               </el-tag>
             </div>
-            <el-empty v-if="recentJetStreams.length === 0" description="暂无数据" :image-size="80" />
+            <el-empty
+              v-if="recentJetStreams.length === 0"
+              description="暂无数据"
+              :image-size="80"
+            />
           </div>
         </el-card>
       </el-col>

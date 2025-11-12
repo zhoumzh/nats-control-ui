@@ -51,12 +51,7 @@
             />
           </el-select>
 
-          <el-select
-            v-model="statusFilter"
-            placeholder="状态筛选"
-            style="width: 120px"
-            clearable
-          >
+          <el-select v-model="statusFilter" placeholder="状态筛选" style="width: 120px" clearable>
             <el-option label="活跃" value="active" />
             <el-option label="非活跃" value="inactive" />
             <el-option label="错误" value="error" />
@@ -103,8 +98,7 @@
               <span v-if="getClusterName(row.jetstream_id)" class="cluster-name">{{
                 getClusterName(row.jetstream_id)
               }}</span>
-              <span v-else class="text-muted cluster-id">-</span
-              >
+              <span v-else class="text-muted cluster-id">-</span>
             </div>
           </template>
         </el-table-column>
@@ -136,10 +130,7 @@
 
         <el-table-column label="模式" width="80">
           <template #default="{ row }">
-            <el-tooltip
-              :content="row.consumer_type === 'push' ? 'Push' : 'Pull'"
-              placement="right"
-            >
+            <el-tooltip :content="row.consumer_type === 'push' ? 'Push' : 'Pull'" placement="right">
               <img
                 :src="row.consumer_type === 'push' ? iconPush : iconPull"
                 :alt="row.consumer_type === 'push' ? 'Push' : 'Pull'"
@@ -157,7 +148,9 @@
 
         <el-table-column label="Deliver Policy" width="160">
           <template #default="{ row }">
-            <el-tag size="small" effect="plain">{{ getDeliverPolicyText(row.deliver_policy) }}</el-tag>
+            <el-tag size="small" effect="plain">{{
+              getDeliverPolicyText(row.deliver_policy)
+            }}</el-tag>
           </template>
         </el-table-column>
 
@@ -205,11 +198,7 @@
               >
                 <el-icon class="error-icon"><WarningFilled /></el-icon>
               </el-tooltip>
-              <el-tooltip
-                v-else-if="row.sync_message"
-                :content="row.sync_message"
-                placement="top"
-              >
+              <el-tooltip v-else-if="row.sync_message" :content="row.sync_message" placement="top">
                 <el-icon class="info-icon"><InfoFilled /></el-icon>
               </el-tooltip>
             </div>

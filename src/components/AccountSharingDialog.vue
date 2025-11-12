@@ -10,9 +10,7 @@
       <!-- 导出配置 -->
       <el-tab-pane label="导出配置" name="exports">
         <div class="tab-header">
-          <p class="tab-description">
-            配置可供其他账户导入的 subject，允许数据共享。
-          </p>
+          <p class="tab-description">配置可供其他账户导入的 subject，允许数据共享。</p>
           <el-button type="primary" size="small" @click="showAddExportDialog">
             <el-icon><Plus /></el-icon>
             添加导出
@@ -58,9 +56,7 @@
       <!-- 导入配置 -->
       <el-tab-pane label="导入配置" name="imports">
         <div class="tab-header">
-          <p class="tab-description">
-            从其他账户导入 subject，使用其共享的数据。
-          </p>
+          <p class="tab-description">从其他账户导入 subject，使用其共享的数据。</p>
           <el-button type="primary" size="small" @click="showAddImportDialog">
             <el-icon><Plus /></el-icon>
             添加导入
@@ -126,7 +122,7 @@
                 :value="acc.id"
               />
             </el-select>
-            <div style="margin-top: 4px; font-size: 12px; color: var(--el-text-color-secondary);">
+            <div style="margin-top: 4px; font-size: 12px; color: var(--el-text-color-secondary)">
               当前账户将导出配置的 subject，目标账户将自动创建导入配置
             </div>
           </el-form-item>
@@ -185,7 +181,7 @@
           </div>
 
           <el-form-item>
-            <div style="display: flex; gap: 12px; align-items: center;">
+            <div style="display: flex; gap: 12px; align-items: center">
               <el-button type="primary" text @click="addSubject">
                 <el-icon><Plus /></el-icon>
                 添加 Subject
@@ -209,12 +205,7 @@
       append-to-body
       :close-on-click-modal="false"
     >
-      <el-form
-        ref="exportFormRef"
-        :model="exportForm"
-        :rules="exportRules"
-        label-width="140px"
-      >
+      <el-form ref="exportFormRef" :model="exportForm" :rules="exportRules" label-width="140px">
         <el-form-item label="导出名称" prop="name">
           <el-input v-model="exportForm.name" placeholder="例如: order-events" />
         </el-form-item>
@@ -250,10 +241,7 @@
           <el-input v-model="exportForm.info_url" placeholder="更多信息的URL（可选）" />
         </el-form-item>
 
-        <el-form-item
-          v-if="exportForm.type === 'service'"
-          label="响应类型"
-        >
+        <el-form-item v-if="exportForm.type === 'service'" label="响应类型">
           <el-input v-model="exportForm.response_type" placeholder="响应类型（可选）" />
         </el-form-item>
       </el-form>
@@ -272,12 +260,7 @@
       append-to-body
       :close-on-click-modal="false"
     >
-      <el-form
-        ref="importFormRef"
-        :model="importForm"
-        :rules="importRules"
-        label-width="140px"
-      >
+      <el-form ref="importFormRef" :model="importForm" :rules="importRules" label-width="140px">
         <el-form-item label="导入名称" prop="name">
           <el-input v-model="importForm.name" placeholder="例如: imported-orders" />
         </el-form-item>
@@ -317,10 +300,7 @@
         </el-form-item>
 
         <el-form-item label="激活令牌">
-          <el-input
-            v-model="importForm.token"
-            placeholder="如果源账户要求令牌，请输入"
-          />
+          <el-input v-model="importForm.token" placeholder="如果源账户要求令牌，请输入" />
         </el-form-item>
       </el-form>
 

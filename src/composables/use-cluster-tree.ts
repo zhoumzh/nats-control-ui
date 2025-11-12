@@ -7,7 +7,14 @@ import { clusterApi } from '@/api/clusters'
 import { useAccountStore } from '@/stores/accounts'
 import { useClusterStore } from '@/stores/clusters'
 import JetStreamErrorHandler, { type AccountErrorInfo } from '@/utils/jetstream-error-handler'
-import type { TreeNode, JetStreamAccountInfo, StreamInfo, Account, Cluster, JetStreamDetectionResponse } from '@/types'
+import type {
+  TreeNode,
+  JetStreamAccountInfo,
+  StreamInfo,
+  Account,
+  Cluster,
+  JetStreamDetectionResponse,
+} from '@/types'
 
 export function useClusterTree(clusterId: string, clusterFromRoute?: Cluster) {
   const accountStore = useAccountStore()
@@ -59,7 +66,7 @@ export function useClusterTree(clusterId: string, clusterFromRoute?: Cluster) {
 
       // 步骤1: 只加载集群信息，不加载账户列表
       loadingProgress.value = 50
-      
+
       // 如果没有从路由传入集群对象且 store 中找不到当前集群，则通过 ID 获取
       if (!clusterFromRoute && !clusterStore.clusters.find((c) => c.id === clusterId)) {
         await clusterStore.fetchCluster(clusterId)
@@ -200,14 +207,14 @@ export function useClusterTree(clusterId: string, clusterFromRoute?: Cluster) {
       console.log('开始加载账户列表...')
 
       // 加载账户和用户数据
-      await Promise.all([
-        accountStore.fetchAccounts({ page_size: 10000 }),
-      ])
+      await Promise.all([accountStore.fetchAccounts({ page_size: 10000 })])
 
       // 构建账户节点
       const clusterNode = treeNodes.value[0]
       if (clusterNode) {
-        const nonSystemAccounts = accountStore.accounts.filter((account) => !account.is_system_account)
+        const nonSystemAccounts = accountStore.accounts.filter(
+          (account) => !account.is_system_account
+        )
 
         const accountNodes: TreeNode[] = nonSystemAccounts.map((account) => ({
           id: `account_${account.id}`,
@@ -480,7 +487,10 @@ export function useClusterTree(clusterId: string, clusterFromRoute?: Cluster) {
       errors.value.set(requestKey, errorInfo)
 
       // 提取错误信息：优先使用 response.data.error，否则使用 errorInfo.details
-      const errorMessage = error.response?.data?.error || errorInfo.details || JetStreamErrorHandler.getUserFriendlyMessage(errorInfo)
+      const errorMessage =
+        error.response?.data?.error ||
+        errorInfo.details ||
+        JetStreamErrorHandler.getUserFriendlyMessage(errorInfo)
 
       // 只显示当前账户的错误，不影响整个页面
       ElMessage({
@@ -515,7 +525,7 @@ export function useClusterTree(clusterId: string, clusterFromRoute?: Cluster) {
           parentAccount.accountId,
           jetstreamNode.name
         ),
-        clusterApi.getClusterJetStreamConsumers(clusterId, jetstreamNode.name)
+        clusterApi.getClusterJetStreamConsumers(clusterId, jetstreamNode.name),
       ])
 
       console.log(`JetStream ${jetstreamNode.name} 详情加载完成:`, detailData)
@@ -531,7 +541,7 @@ export function useClusterTree(clusterId: string, clusterFromRoute?: Cluster) {
 
         // 如果有consumers，挂载为子节点
         if (consumersData.consumers && consumersData.consumers.length > 0) {
-          updatedNode.children = consumersData.consumers.map(consumerName => ({
+          updatedNode.children = consumersData.consumers.map((consumerName) => ({
             id: `consumer_${consumerName}`,
             label: consumerName,
             type: 'consumer',

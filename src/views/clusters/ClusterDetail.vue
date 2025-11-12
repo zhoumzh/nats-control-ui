@@ -57,10 +57,30 @@
           >
             <template #default="{ node, data }">
               <div class="tree-node">
-                <img v-if="data.type === 'cluster'" :src="clusterIcon" class="node-icon-img" alt="cluster" />
-                <img v-else-if="data.type === 'consumer'" :src="consumerIcon" class="node-icon-img" alt="consumer" />
-                <img v-else-if="data.type === 'jetstream'" :src="getJetStreamIcon(data)" class="node-icon-img" alt="jetstream" />
-                <img v-else-if="data.type === 'account'" :src="getAccountIcon(data)" class="node-icon-img" alt="account" />
+                <img
+                  v-if="data.type === 'cluster'"
+                  :src="clusterIcon"
+                  class="node-icon-img"
+                  alt="cluster"
+                />
+                <img
+                  v-else-if="data.type === 'consumer'"
+                  :src="consumerIcon"
+                  class="node-icon-img"
+                  alt="consumer"
+                />
+                <img
+                  v-else-if="data.type === 'jetstream'"
+                  :src="getJetStreamIcon(data)"
+                  class="node-icon-img"
+                  alt="jetstream"
+                />
+                <img
+                  v-else-if="data.type === 'account'"
+                  :src="getAccountIcon(data)"
+                  class="node-icon-img"
+                  alt="account"
+                />
                 <el-icon v-else class="node-icon">
                   <component :is="getNodeIcon(data, node.expanded)" />
                 </el-icon>
@@ -149,9 +169,7 @@
               <h3>集群信息</h3>
             </div>
             <el-descriptions :column="1" border>
-              <el-descriptions-item label="集群ID">{{
-                currentCluster?.id
-              }}</el-descriptions-item>
+              <el-descriptions-item label="集群ID">{{ currentCluster?.id }}</el-descriptions-item>
               <el-descriptions-item label="集群名称">{{
                 currentCluster?.name
               }}</el-descriptions-item>
@@ -232,7 +250,9 @@
 
             <el-descriptions :column="1" border>
               <el-descriptions-item label="账户名称">{{ selectedNode.name }}</el-descriptions-item>
-              <el-descriptions-item label="账户ID">{{ getAccountFullDetails()?.id || 'N/A' }}</el-descriptions-item>
+              <el-descriptions-item label="账户ID">{{
+                getAccountFullDetails()?.id || 'N/A'
+              }}</el-descriptions-item>
               <el-descriptions-item label="状态">
                 <el-tag :type="selectedNode.status === 'active' ? 'success' : 'danger'">
                   {{ selectedNode.status === 'active' ? '活跃' : '禁用' }}
@@ -248,9 +268,15 @@
                   {{ selectedNode.is_system_account ? '是' : '否' }}
                 </el-tag>
               </el-descriptions-item>
-              <el-descriptions-item label="公钥">{{ getAccountFullDetails()?.public_key || 'N/A' }}</el-descriptions-item>
-              <el-descriptions-item label="创建时间">{{ formatDateTime(getAccountFullDetails()?.created_at || new Date()) }}</el-descriptions-item>
-              <el-descriptions-item label="更新时间">{{ formatDateTime(getAccountFullDetails()?.updated_at || new Date()) }}</el-descriptions-item>
+              <el-descriptions-item label="公钥">{{
+                getAccountFullDetails()?.public_key || 'N/A'
+              }}</el-descriptions-item>
+              <el-descriptions-item label="创建时间">{{
+                formatDateTime(getAccountFullDetails()?.created_at || new Date())
+              }}</el-descriptions-item>
+              <el-descriptions-item label="更新时间">{{
+                formatDateTime(getAccountFullDetails()?.updated_at || new Date())
+              }}</el-descriptions-item>
               <el-descriptions-item label="描述">{{
                 selectedNode.description || getAccountFullDetails()?.description || '暂无描述'
               }}</el-descriptions-item>
@@ -266,29 +292,42 @@
                   <el-statistic title="流数量" :value="selectedNode.detectionData.streams || 0" />
                 </el-col>
                 <el-col :span="24" :md="6">
-                  <el-statistic title="消费者数量" :value="selectedNode.detectionData.consumers || 0" />
+                  <el-statistic
+                    title="消费者数量"
+                    :value="selectedNode.detectionData.consumers || 0"
+                  />
                 </el-col>
                 <el-col :span="24" :md="6">
-                  <el-statistic title="总消息数" :value="selectedNode.detectionData.messages || 0" />
+                  <el-statistic
+                    title="总消息数"
+                    :value="selectedNode.detectionData.messages || 0"
+                  />
                 </el-col>
                 <el-col :span="24" :md="6">
-                  <el-statistic title="字节数" :value="formatBytes(selectedNode.detectionData.bytes || 0)" />
+                  <el-statistic
+                    title="字节数"
+                    :value="formatBytes(selectedNode.detectionData.bytes || 0)"
+                  />
                 </el-col>
               </el-row>
 
               <!-- 存储信息 -->
               <el-descriptions :column="2" border size="small" style="margin-top: 16px">
                 <el-descriptions-item label="内存使用">
-                  {{ selectedNode.detectionData.memory_value }} {{ selectedNode.detectionData.memory_unit }}
+                  {{ selectedNode.detectionData.memory_value }}
+                  {{ selectedNode.detectionData.memory_unit }}
                 </el-descriptions-item>
                 <el-descriptions-item label="存储使用">
-                  {{ selectedNode.detectionData.storage_value }} {{ selectedNode.detectionData.storage_unit }}
+                  {{ selectedNode.detectionData.storage_value }}
+                  {{ selectedNode.detectionData.storage_unit }}
                 </el-descriptions-item>
                 <el-descriptions-item label="预留内存">
-                  {{ selectedNode.detectionData.reserved_memory_value }} {{ selectedNode.detectionData.reserved_memory_unit }}
+                  {{ selectedNode.detectionData.reserved_memory_value }}
+                  {{ selectedNode.detectionData.reserved_memory_unit }}
                 </el-descriptions-item>
                 <el-descriptions-item label="预留存储">
-                  {{ selectedNode.detectionData.reserved_storage_value }} {{ selectedNode.detectionData.reserved_storage_unit }}
+                  {{ selectedNode.detectionData.reserved_storage_value }}
+                  {{ selectedNode.detectionData.reserved_storage_unit }}
                 </el-descriptions-item>
                 <el-descriptions-item label="账户数">
                   {{ selectedNode.detectionData.accounts }}
@@ -309,7 +348,9 @@
                     {{ selectedNode.detectionData.api.total }}
                   </el-descriptions-item>
                   <el-descriptions-item label="错误数">
-                    <el-tag :type="selectedNode.detectionData.api.errors > 0 ? 'danger' : 'success'">
+                    <el-tag
+                      :type="selectedNode.detectionData.api.errors > 0 ? 'danger' : 'success'"
+                    >
                       {{ selectedNode.detectionData.api.errors }}
                     </el-tag>
                   </el-descriptions-item>
@@ -362,7 +403,6 @@
                 </el-descriptions>
               </div>
             </div>
-
           </div>
 
           <!-- JetStream Info -->
@@ -560,13 +600,18 @@
                   selectedNode.cluster.leader || 'N/A'
                 }}</el-descriptions-item>
                 <el-descriptions-item label="领导者开始时间" :span="2">{{
-                  selectedNode.cluster.leader_since ? formatDateTime(selectedNode.cluster.leader_since) : 'N/A'
+                  selectedNode.cluster.leader_since
+                    ? formatDateTime(selectedNode.cluster.leader_since)
+                    : 'N/A'
                 }}</el-descriptions-item>
                 <el-descriptions-item label="Raft组">{{
                   selectedNode.cluster.raft_group || 'N/A'
                 }}</el-descriptions-item>
                 <el-descriptions-item label="系统账户">
-                  <el-tag :type="selectedNode.cluster.system_account ? 'success' : 'info'" size="small">
+                  <el-tag
+                    :type="selectedNode.cluster.system_account ? 'success' : 'info'"
+                    size="small"
+                  >
                     {{ selectedNode.cluster.system_account ? '是' : '否' }}
                   </el-tag>
                 </el-descriptions-item>
@@ -619,29 +664,61 @@
 
             <!-- 基本信息 -->
             <el-descriptions :column="1" border>
-              <el-descriptions-item label="Consumer名称">{{ consumerDetail?.consumer_info?.name || selectedNode.name }}</el-descriptions-item>
-              <el-descriptions-item label="Stream名称">{{ consumerDetail?.consumer_info?.stream_name || 'N/A' }}</el-descriptions-item>
-              <el-descriptions-item label="创建时间">{{ consumerDetail?.consumer_info?.created ? formatDateTime(consumerDetail.consumer_info.created) : 'N/A' }}</el-descriptions-item>
-              <el-descriptions-item label="描述">{{ consumerDetail?.consumer_info?.config?.description || '暂无描述' }}</el-descriptions-item>
+              <el-descriptions-item label="Consumer名称">{{
+                consumerDetail?.consumer_info?.name || selectedNode.name
+              }}</el-descriptions-item>
+              <el-descriptions-item label="Stream名称">{{
+                consumerDetail?.consumer_info?.stream_name || 'N/A'
+              }}</el-descriptions-item>
+              <el-descriptions-item label="创建时间">{{
+                consumerDetail?.consumer_info?.created
+                  ? formatDateTime(consumerDetail.consumer_info.created)
+                  : 'N/A'
+              }}</el-descriptions-item>
+              <el-descriptions-item label="描述">{{
+                consumerDetail?.consumer_info?.config?.description || '暂无描述'
+              }}</el-descriptions-item>
             </el-descriptions>
 
             <!-- 配置信息 -->
             <div class="detail-section">
               <h4>配置信息</h4>
               <el-descriptions :column="2" border size="small">
-                <el-descriptions-item label="持久化名称">{{ consumerDetail?.consumer_info?.config?.durable_name || 'N/A' }}</el-descriptions-item>
-                <el-descriptions-item label="投递策略">{{ consumerDetail?.consumer_info?.config?.deliver_policy || 'N/A' }}</el-descriptions-item>
-                <el-descriptions-item label="确认策略">{{ consumerDetail?.consumer_info?.config?.ack_policy || 'N/A' }}</el-descriptions-item>
+                <el-descriptions-item label="持久化名称">{{
+                  consumerDetail?.consumer_info?.config?.durable_name || 'N/A'
+                }}</el-descriptions-item>
+                <el-descriptions-item label="投递策略">{{
+                  consumerDetail?.consumer_info?.config?.deliver_policy || 'N/A'
+                }}</el-descriptions-item>
+                <el-descriptions-item label="确认策略">{{
+                  consumerDetail?.consumer_info?.config?.ack_policy || 'N/A'
+                }}</el-descriptions-item>
                 <el-descriptions-item label="确认等待时间">
-                  {{ consumerDetail?.consumer_info?.config?.ack_wait ? formatNanoseconds(consumerDetail.consumer_info.config.ack_wait) : 'N/A' }}
+                  {{
+                    consumerDetail?.consumer_info?.config?.ack_wait
+                      ? formatNanoseconds(consumerDetail.consumer_info.config.ack_wait)
+                      : 'N/A'
+                  }}
                 </el-descriptions-item>
                 <el-descriptions-item label="最大投递次数">
-                  {{ consumerDetail?.consumer_info?.config?.max_deliver === -1 ? '无限制' : consumerDetail?.consumer_info?.config?.max_deliver || 0 }}
+                  {{
+                    consumerDetail?.consumer_info?.config?.max_deliver === -1
+                      ? '无限制'
+                      : consumerDetail?.consumer_info?.config?.max_deliver || 0
+                  }}
                 </el-descriptions-item>
-                <el-descriptions-item label="重放策略">{{ consumerDetail?.consumer_info?.config?.replay_policy || 'N/A' }}</el-descriptions-item>
-                <el-descriptions-item label="最大待确认消息数">{{ consumerDetail?.consumer_info?.config?.max_ack_pending || 0 }}</el-descriptions-item>
-                <el-descriptions-item label="副本数">{{ consumerDetail?.consumer_info?.config?.num_replicas || 1 }}</el-descriptions-item>
-                <el-descriptions-item label="投递目标主题" :span="2">{{ consumerDetail?.consumer_info?.config?.deliver_subject || '未配置' }}</el-descriptions-item>
+                <el-descriptions-item label="重放策略">{{
+                  consumerDetail?.consumer_info?.config?.replay_policy || 'N/A'
+                }}</el-descriptions-item>
+                <el-descriptions-item label="最大待确认消息数">{{
+                  consumerDetail?.consumer_info?.config?.max_ack_pending || 0
+                }}</el-descriptions-item>
+                <el-descriptions-item label="副本数">{{
+                  consumerDetail?.consumer_info?.config?.num_replicas || 1
+                }}</el-descriptions-item>
+                <el-descriptions-item label="投递目标主题" :span="2">{{
+                  consumerDetail?.consumer_info?.config?.deliver_subject || '未配置'
+                }}</el-descriptions-item>
               </el-descriptions>
             </div>
 
@@ -650,16 +727,28 @@
               <h4>消费统计</h4>
               <el-row :gutter="12">
                 <el-col :span="24" :md="6">
-                  <el-statistic title="待处理消息数" :value="consumerDetail?.consumer_info?.num_pending || 0" />
+                  <el-statistic
+                    title="待处理消息数"
+                    :value="consumerDetail?.consumer_info?.num_pending || 0"
+                  />
                 </el-col>
                 <el-col :span="24" :md="6">
-                  <el-statistic title="待确认消息数" :value="consumerDetail?.consumer_info?.num_ack_pending || 0" />
+                  <el-statistic
+                    title="待确认消息数"
+                    :value="consumerDetail?.consumer_info?.num_ack_pending || 0"
+                  />
                 </el-col>
                 <el-col :span="24" :md="6">
-                  <el-statistic title="重新投递次数" :value="consumerDetail?.consumer_info?.num_redelivered || 0" />
+                  <el-statistic
+                    title="重新投递次数"
+                    :value="consumerDetail?.consumer_info?.num_redelivered || 0"
+                  />
                 </el-col>
                 <el-col :span="24" :md="6">
-                  <el-statistic title="等待拉取数" :value="consumerDetail?.consumer_info?.num_waiting || 0" />
+                  <el-statistic
+                    title="等待拉取数"
+                    :value="consumerDetail?.consumer_info?.num_waiting || 0"
+                  />
                 </el-col>
               </el-row>
             </div>
@@ -668,10 +757,18 @@
             <div class="detail-section">
               <h4>序列信息</h4>
               <el-descriptions :column="2" border size="small">
-                <el-descriptions-item label="Consumer已投递序列号">{{ consumerDetail?.consumer_info?.delivered?.consumer_seq || 0 }}</el-descriptions-item>
-                <el-descriptions-item label="Stream已投递序列号">{{ consumerDetail?.consumer_info?.delivered?.stream_seq || 0 }}</el-descriptions-item>
-                <el-descriptions-item label="Consumer确认序列号">{{ consumerDetail?.consumer_info?.ack_floor?.consumer_seq || 0 }}</el-descriptions-item>
-                <el-descriptions-item label="Stream确认序列号">{{ consumerDetail?.consumer_info?.ack_floor?.stream_seq || 0 }}</el-descriptions-item>
+                <el-descriptions-item label="Consumer已投递序列号">{{
+                  consumerDetail?.consumer_info?.delivered?.consumer_seq || 0
+                }}</el-descriptions-item>
+                <el-descriptions-item label="Stream已投递序列号">{{
+                  consumerDetail?.consumer_info?.delivered?.stream_seq || 0
+                }}</el-descriptions-item>
+                <el-descriptions-item label="Consumer确认序列号">{{
+                  consumerDetail?.consumer_info?.ack_floor?.consumer_seq || 0
+                }}</el-descriptions-item>
+                <el-descriptions-item label="Stream确认序列号">{{
+                  consumerDetail?.consumer_info?.ack_floor?.stream_seq || 0
+                }}</el-descriptions-item>
               </el-descriptions>
             </div>
 
@@ -679,15 +776,24 @@
             <div v-if="consumerDetail?.consumer_info?.cluster" class="detail-section">
               <h4>集群信息</h4>
               <el-descriptions :column="2" border size="small">
-                <el-descriptions-item label="集群名称">{{ consumerDetail.consumer_info.cluster.name || 'N/A' }}</el-descriptions-item>
-                <el-descriptions-item label="领导者节点">{{ consumerDetail.consumer_info.cluster.leader || 'N/A' }}</el-descriptions-item>
+                <el-descriptions-item label="集群名称">{{
+                  consumerDetail.consumer_info.cluster.name || 'N/A'
+                }}</el-descriptions-item>
+                <el-descriptions-item label="领导者节点">{{
+                  consumerDetail.consumer_info.cluster.leader || 'N/A'
+                }}</el-descriptions-item>
               </el-descriptions>
             </div>
 
             <!-- 元数据 -->
             <div v-if="consumerDetail?.consumer_info?.config?.metadata" class="detail-section">
               <h4>元数据</h4>
-              <el-table :data="formatMetadata(consumerDetail.consumer_info.config.metadata)" border stripe size="small">
+              <el-table
+                :data="formatMetadata(consumerDetail.consumer_info.config.metadata)"
+                border
+                stripe
+                size="small"
+              >
                 <el-table-column prop="key" label="键" width="200" />
                 <el-table-column prop="value" label="值" min-width="200" />
               </el-table>
@@ -956,7 +1062,7 @@ const getAccountFullDetails = () => {
   if (!selectedNode.value || selectedNode.value.type !== 'account') return null
   const accountStore = useAccountStore()
   const accountId = selectedNode.value.id.replace('account_', '')
-  return accountStore.accounts.find(acc => acc.id === accountId)
+  return accountStore.accounts.find((acc) => acc.id === accountId)
 }
 
 // Lifecycle
@@ -965,13 +1071,17 @@ onMounted(() => {
 })
 
 // Watch selectedNode to auto-load consumer details
-watch(selectedNode, (newNode) => {
-  if (newNode?.type === 'consumer') {
-    refreshConsumerInfo()
-  } else {
-    consumerDetail.value = null
-  }
-}, { immediate: false })
+watch(
+  selectedNode,
+  (newNode) => {
+    if (newNode?.type === 'consumer') {
+      refreshConsumerInfo()
+    } else {
+      consumerDetail.value = null
+    }
+  },
+  { immediate: false }
+)
 
 // Helper functions for template
 const getNodeIcon = (nodeData: TreeNode, expanded: boolean) => {
@@ -1000,16 +1110,17 @@ const getNodeIcon = (nodeData: TreeNode, expanded: boolean) => {
 // 获取 JetStream 节点的图标
 const getJetStreamIcon = (nodeData: TreeNode) => {
   // 判断是否有消费者：检查 children 或 state.consumer_count
-  const hasConsumers = (nodeData.children && nodeData.children.length > 0) || 
-                       (nodeData.state?.consumer_count && nodeData.state.consumer_count > 0)
+  const hasConsumers =
+    (nodeData.children && nodeData.children.length > 0) ||
+    (nodeData.state?.consumer_count && nodeData.state.consumer_count > 0)
   return hasConsumers ? streamHasConsumerIcon : streamNoConsumerIcon
 }
 
 // 获取 Account 节点的图标
 const getAccountIcon = (nodeData: TreeNode) => {
   // 判断是否有流：检查 expandable 属性或 children
-  const hasStreams = nodeData.expandable === true || 
-                     (nodeData.children && nodeData.children.length > 0)
+  const hasStreams =
+    nodeData.expandable === true || (nodeData.children && nodeData.children.length > 0)
   return hasStreams ? accountHasStreamIcon : accountEmptyIcon
 }
 
@@ -1175,7 +1286,7 @@ const formatNanoseconds = (ns: number): string => {
 const formatMetadata = (metadata: Record<string, any>) => {
   return Object.entries(metadata).map(([key, value]) => ({
     key,
-    value: typeof value === 'object' ? JSON.stringify(value) : String(value)
+    value: typeof value === 'object' ? JSON.stringify(value) : String(value),
   }))
 }
 
@@ -1187,15 +1298,15 @@ const refreshConsumerInfo = async () => {
   try {
     loading.value = true
     const { clusterApi } = await import('@/api/clusters')
-    
+
     const jetstreamName = selectedNode.value.jetstreamName
     const consumerName = selectedNode.value.name
-    
+
     if (!jetstreamName || !consumerName) {
       ElMessage.error('无法获取Consumer信息')
       return
     }
-    
+
     consumerDetail.value = await clusterApi.getClusterJetStreamConsumerDetail(
       clusterId.value,
       jetstreamName,

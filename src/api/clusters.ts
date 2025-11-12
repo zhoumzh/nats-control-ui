@@ -149,16 +149,27 @@ export const clusterApi = {
   },
 
   // Get JetStream consumers
-  getClusterJetStreamConsumers(clusterId: string, jetstreamName: string): Promise<{
+  getClusterJetStreamConsumers(
+    clusterId: string,
+    jetstreamName: string
+  ): Promise<{
     consumers: string[]
     jetstream_id: string
     total: number
   }> {
-    return apiClient.get(`/clusters/${clusterId}/jetstream/${jetstreamName}/consumers`).then((res) => res.data)
+    return apiClient
+      .get(`/clusters/${clusterId}/jetstream/${jetstreamName}/consumers`)
+      .then((res) => res.data)
   },
 
-  getClusterJetStreamConsumerDetail(clusterId: string, jetstreamName: string, consumerName: string): Promise<ConsumerDetailResponse> {
-    return apiClient.get(`/clusters/${clusterId}/jetstream/${jetstreamName}/consumers/${consumerName}`).then((res) => res.data)
+  getClusterJetStreamConsumerDetail(
+    clusterId: string,
+    jetstreamName: string,
+    consumerName: string
+  ): Promise<ConsumerDetailResponse> {
+    return apiClient
+      .get(`/clusters/${clusterId}/jetstream/${jetstreamName}/consumers/${consumerName}`)
+      .then((res) => res.data)
   },
 
   // Delete a JetStream consumer from cluster

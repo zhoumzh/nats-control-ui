@@ -42,7 +42,7 @@ export const useClusterStore = defineStore('cluster', () => {
     try {
       const response = await clusterApi.getCluster(id)
       currentCluster.value = response
-      
+
       // 如果 clusters 数组中不存在该集群，添加进去
       const existingIndex = clusters.value.findIndex((c) => c.id === id)
       if (existingIndex === -1) {
@@ -51,7 +51,7 @@ export const useClusterStore = defineStore('cluster', () => {
         // 如果已存在，更新它
         clusters.value[existingIndex] = response
       }
-      
+
       return response
     } catch (error) {
       console.error('Failed to fetch cluster:', error)

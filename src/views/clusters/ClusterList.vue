@@ -541,7 +541,7 @@ const handleEdit = (cluster: Cluster) => {
 const handleViewCluster = (cluster: Cluster) => {
   router.push({
     path: `/clusters/${cluster.id}/detail`,
-    state: { cluster }
+    state: { cluster },
   })
 }
 

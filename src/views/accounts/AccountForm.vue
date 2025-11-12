@@ -106,7 +106,6 @@
                 />
               </el-select>
             </el-form-item>
-
           </el-card>
         </el-col>
 
@@ -567,14 +566,7 @@ import { useAccountStore } from '@/stores/accounts'
 import { useClusterStore } from '@/stores/clusters'
 import { ElMessage } from 'element-plus'
 import type { FormInstance } from 'element-plus'
-import {
-  ArrowLeft,
-  DocumentCopy,
-  View,
-  Hide,
-  Plus,
-  Delete,
-} from '@element-plus/icons-vue'
+import { ArrowLeft, DocumentCopy, View, Hide, Plus, Delete } from '@element-plus/icons-vue'
 import type { AccountForm, AccountLimitsForm, StorageUnit } from '@/types'
 import { AccountStatus, ExportType, ImportType } from '@/types'
 import StorageInput from '@/components/StorageInput.vue'
@@ -597,12 +589,12 @@ const currentAccount = computed(() => accountStore.currentAccount)
 // 获取编辑模式下的集群名称
 const displayClusterName = computed(() => {
   if (!isEdit.value || !currentAccount.value) return '缺失'
-  
+
   // 优先使用后端返回的 cluster_name
   if (currentAccount.value.cluster_name) {
     return currentAccount.value.cluster_name
   }
-  
+
   // 如果没有 cluster_name，根据 origin_cluster_id 查找
   if (currentAccount.value.origin_cluster_id) {
     const cluster = clusterStore.clusters.find(
@@ -610,7 +602,7 @@ const displayClusterName = computed(() => {
     )
     return cluster ? cluster.name : '缺失'
   }
-  
+
   return '缺失'
 })
 
@@ -654,9 +646,9 @@ const rules = computed(() => ({
     { min: 2, max: 100, message: '长度应为2到100个字符', trigger: 'blur' },
   ],
   description: [{ max: 500, message: '描述不应超过500个字符', trigger: 'blur' }],
-  origin_cluster_id: [
-    { required: true, message: '所属集群为必填项', trigger: 'change' },
-  ],
+  origin_cluster_id: isEdit.value
+    ? []
+    : [{ required: true, message: '所属集群为必填项', trigger: 'change' }],
 }))
 
 const handleJetStreamToggle = (enabled: boolean) => {
@@ -737,8 +729,6 @@ const togglePrivateKey = () => {
   showPrivateKey.value = !showPrivateKey.value
 }
 
-
-
 // Import/Export functions
 const addExport = () => {
   if (!form.limits.exports) {
@@ -795,14 +785,15 @@ const handleSubmit = async () => {
 
   try {
     // 处理 imports：将 account_id 转换为 public_key
-    const processedImports = form.limits.imports?.map((importItem) => {
-      // 根据 account_id 查找对应的 public_key
-      const targetAccount = accountStore.accounts.find((acc) => acc.id === importItem.account)
-      return {
-        ...importItem,
-        account: targetAccount?.public_key || importItem.account, // 使用 public_key，如果找不到则保持原值
-      }
-    }) || []
+    const processedImports =
+      form.limits.imports?.map((importItem) => {
+        // 根据 account_id 查找对应的 public_key
+        const targetAccount = accountStore.accounts.find((acc) => acc.id === importItem.account)
+        return {
+          ...importItem,
+          account: targetAccount?.public_key || importItem.account, // 使用 public_key，如果找不到则保持原值
+        }
+      }) || []
 
     const formData: AccountForm & { origin_cluster_id?: string } = {
       name: form.name,
@@ -875,19 +866,20 @@ const loadAccount = async () => {
     if (account.limits) {
       limitsEnabled.value = true
       jetStreamEnabled.value = !!account.limits.jetstream_limits?.enabled
-      
+
       // 处理 imports：将 public_key 转换为 account_id 用于表单显示
-      const processedImports = account.limits.imports?.map((importItem) => {
-        // 根据 public_key 查找对应的 account_id
-        const targetAccount = accountStore.accounts.find(
-          (acc) => acc.public_key === importItem.account
-        )
-        return {
-          ...importItem,
-          account: targetAccount?.id || importItem.account, // 使用 id 用于选择器，如果找不到则保持原值
-        }
-      }) || []
-      
+      const processedImports =
+        account.limits.imports?.map((importItem) => {
+          // 根据 public_key 查找对应的 account_id
+          const targetAccount = accountStore.accounts.find(
+            (acc) => acc.public_key === importItem.account
+          )
+          return {
+            ...importItem,
+            account: targetAccount?.id || importItem.account, // 使用 id 用于选择器，如果找不到则保持原值
+          }
+        }) || []
+
       form.limits = {
         max_connections: account.limits.max_connections,
         max_leaf_nodes: account.limits.max_leaf_nodes,
@@ -921,8 +913,6 @@ const loadAccount = async () => {
     router.push('/accounts')
   }
 }
-
-
 
 onMounted(async () => {
   // 加载集群列表(用于所属集群选择)

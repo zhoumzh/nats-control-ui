@@ -710,7 +710,7 @@ const handleSubmit = async () => {
       mode: form.mode, // 后端必需字段：'push' or 'pull'
       cluster_id: form.cluster_id, // 使用 cluster_id 替代 jetstream_id
       description: '', // TODO: 表单中没有 description 字段，先使用空字符串
-      
+
       // Consumer configuration
       durable: form.consumer_name, // Durable name
       ack_policy: mapAckPolicyToBackend(form.ack_policy),
@@ -719,14 +719,14 @@ const handleSubmit = async () => {
       filter_subject: form.filter_subject,
       replay_policy: 'instant', // 默认立即重放
       sample_freq: form.sample_freq,
-      
+
       // Flow control
       rate_limit: form.rate_limit_bps || 0,
       max_ack_pending: 1000, // 默认值
       max_waiting: form.mode === 'pull' ? 512 : undefined, // max_waiting 仅适用于 Pull 模式
-      max_batch: form.mode === 'pull' ? (form.max_batch || 0) : undefined, // max_batch 仅适用于 Pull 模式
-      max_expires: form.mode === 'pull' ? (form.max_expires || '0s') : undefined, // max_expires 仅适用于 Pull 模式
-      
+      max_batch: form.mode === 'pull' ? form.max_batch || 0 : undefined, // max_batch 仅适用于 Pull 模式
+      max_expires: form.mode === 'pull' ? form.max_expires || '0s' : undefined, // max_expires 仅适用于 Pull 模式
+
       // Advanced options
       inactive_threshold: 0, // 默认值
       deliver_policy: form.deliver_policy,
@@ -735,19 +735,19 @@ const handleSubmit = async () => {
       deliver_subject: form.deliver_subject,
       deliver_group: form.deliver_group,
       flow_control: form.flow_control || false,
-      idle_heartbeat: form.mode === 'push' ? (form.idle_heartbeat || '0s') : undefined,
+      idle_heartbeat: form.mode === 'push' ? form.idle_heartbeat || '0s' : undefined,
       headers_only: false, // 默认值
-      max_request_batch: form.mode === 'pull' ? (form.max_batch || 0) : undefined, // max_request_batch 仅适用于 Pull 模式
-      max_request_expires: form.mode === 'pull' ? (form.max_expires || '0s') : undefined, // max_request_expires 仅适用于 Pull 模式
-      max_request_max_bytes: form.mode === 'pull' ? (form.max_bytes || 0) : undefined, // max_request_max_bytes 仅适用于 Pull 模式
-      
+      max_request_batch: form.mode === 'pull' ? form.max_batch || 0 : undefined, // max_request_batch 仅适用于 Pull 模式
+      max_request_expires: form.mode === 'pull' ? form.max_expires || '0s' : undefined, // max_request_expires 仅适用于 Pull 模式
+      max_request_max_bytes: form.mode === 'pull' ? form.max_bytes || 0 : undefined, // max_request_max_bytes 仅适用于 Pull 模式
+
       // Memory storage
       mem_storage: false, // 默认值
       replicas: form.replicas || 1,
     }
 
     // 清理未定义的字段
-    Object.keys(submitData).forEach(key => {
+    Object.keys(submitData).forEach((key) => {
       if (submitData[key] === undefined) {
         delete submitData[key]
       }
@@ -795,14 +795,14 @@ const loadConsumer = async () => {
 
     // 手动映射后端字段到表单字段
     // 查找对应的 JetStream 来获取 stream_name 和 cluster_id
-    const jetstream = jetstreamStore.jetstreams.find(j => j.id === consumer.jetstream_id)
-    
+    const jetstream = jetstreamStore.jetstreams.find((j) => j.id === consumer.jetstream_id)
+
     form.cluster_id = jetstream?.cluster_id || ''
     form.stream_name = jetstream?.name || ''
     form.consumer_name = consumer.durable || consumer.name
     form.mode = consumer.consumer_type === 'push' ? 'push' : 'pull'
     form.ack_policy = mapAckPolicyFromBackend(consumer.ack_policy)
-    
+
     // Push 模式字段
     if (consumer.consumer_type === 'push') {
       form.deliver_subject = consumer.deliver_subject
@@ -817,14 +817,16 @@ const loadConsumer = async () => {
         form.idle_heartbeat = `${seconds}s`
       }
     }
-    
+
     // Pull 模式字段
     if (consumer.consumer_type === 'pull') {
       form.max_batch = consumer.max_batch > 0 ? consumer.max_batch : undefined
-      form.max_bytes = consumer.max_request_max_bytes > 0 ? consumer.max_request_max_bytes : undefined
-      form.max_expires = consumer.max_expires > 0 ? `${consumer.max_expires / 1000000000}s` : undefined
+      form.max_bytes =
+        consumer.max_request_max_bytes > 0 ? consumer.max_request_max_bytes : undefined
+      form.max_expires =
+        consumer.max_expires > 0 ? `${consumer.max_expires / 1000000000}s` : undefined
     }
-    
+
     // 过滤器字段
     form.filter_subject = consumer.filter_subject
     if (consumer.filter_subject) {
@@ -832,11 +834,11 @@ const loadConsumer = async () => {
     } else {
       filterMode.value = 'none'
     }
-    
+
     // 重试与重新投递策略
     form.max_deliver = consumer.max_deliver > 0 ? consumer.max_deliver : undefined
     form.ack_wait = consumer.ack_wait > 0 ? `${consumer.ack_wait}s` : undefined
-    
+
     // 投递策略
     form.deliver_policy = mapDeliverPolicyFromBackend(consumer.deliver_policy)
     if (consumer.deliver_policy === 'by_start_sequence') {
@@ -845,7 +847,7 @@ const loadConsumer = async () => {
     if (consumer.deliver_policy === 'by_start_time') {
       form.start_time = consumer.opt_start_time
     }
-    
+
     // 高级设置
     form.sample_freq = consumer.sample_freq
     form.replicas = consumer.replicas || 1
