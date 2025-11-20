@@ -83,6 +83,11 @@
                 placeholder="选择 Push 或 Pull 模式"
                 :disabled="isEdit"
               >
+                <template #prefix v-if="isEdit">
+                  <el-tooltip content="Consumer 创建后不可修改模式" placement="top">
+                    <el-icon><Lock /></el-icon>
+                  </el-tooltip>
+                </template>
                 <el-option label="Push 模式" value="push">
                   <div>
                     <div>Push 模式</div>
@@ -103,7 +108,11 @@
             </el-form-item>
 
             <el-form-item label="Ack 模式" prop="ack_policy" required>
-              <el-select v-model="form.ack_policy" placeholder="选择确认策略">
+              <el-select 
+                v-model="form.ack_policy" 
+                placeholder="选择确认策略"
+                :disabled="isEdit"
+              >
                 <el-option
                   v-for="option in ackPolicyOptions"
                   :key="option.value"
@@ -129,8 +138,15 @@
             <el-input
               v-model="form.deliver_subject"
               placeholder="推送的目标 subject，例如: events.push"
-            />
-            <div class="form-help">Push 模式必填：服务器推送消息的目标 subject</div>
+              :disabled="isEdit"
+            >
+              <template #suffix v-if="isEdit">
+                <el-tooltip content="Deliver Subject 创建后不可修改" placement="top">
+                  <el-icon><Lock /></el-icon>
+                </el-tooltip>
+              </template>
+            </el-input>
+            <div class="form-help">Push 模式必填：服务器推送消息的目标 subject{{ isEdit ? '（不可修改）' : '' }}</div>
           </el-form-item>
 
           <div class="form-grid-2">
@@ -152,8 +168,8 @@
 
           <div class="form-grid-2">
             <el-form-item label="启用 Flow Control" prop="flow_control">
-              <el-switch v-model="form.flow_control" />
-              <span class="form-help inline">启用流量控制</span>
+              <el-switch v-model="form.flow_control" :disabled="isEdit" />
+              <span class="form-help inline">启用流量控制{{ isEdit ? '（不可修改）' : '' }}</span>
             </el-form-item>
 
             <el-form-item
@@ -162,8 +178,18 @@
               prop="idle_heartbeat"
               :required="form.flow_control"
             >
-              <el-input v-model="form.idle_heartbeat" placeholder="例如: 5s, 100ms" />
-              <div class="form-help">无消息时心跳间隔，如 '5s', '100ms'</div>
+              <el-input 
+                v-model="form.idle_heartbeat" 
+                placeholder="例如: 5s, 100ms"
+                :disabled="isEdit"
+              >
+                <template #suffix v-if="isEdit">
+                  <el-tooltip content="Heartbeat 创建后不可修改" placement="top">
+                    <el-icon><Lock /></el-icon>
+                  </el-tooltip>
+                </template>
+              </el-input>
+              <div class="form-help">无消息时心跳间隔，如 '5s', '100ms'{{ isEdit ? '（不可修改）' : '' }}</div>
             </el-form-item>
           </div>
         </div>
@@ -302,10 +328,14 @@
         </div>
 
         <div class="form-section">
-          <h3 class="section-title">投递策略（Deliver Policy）</h3>
+          <h3 class="section-title">投递策略（Deliver Policy）{{ isEdit ? '（不可修改）' : '' }}</h3>
 
           <el-form-item label="Deliver Policy" prop="deliver_policy">
-            <el-select v-model="form.deliver_policy" placeholder="选择投递策略">
+            <el-select 
+              v-model="form.deliver_policy" 
+              placeholder="选择投递策略"
+              :disabled="isEdit"
+            >
               <el-option
                 v-for="option in deliverPolicyOptions"
                 :key="option.value"
@@ -333,8 +363,9 @@
               :min="1"
               placeholder="起始序列号"
               style="width: 100%"
+              :disabled="isEdit"
             />
-            <div class="form-help">从指定序列号开始投递消息</div>
+            <div class="form-help">从指定序列号开始投递消息{{ isEdit ? '（不可修改）' : '' }}</div>
           </el-form-item>
 
           <el-form-item
@@ -349,8 +380,9 @@
               placeholder="选择起始时间"
               style="width: 100%"
               value-format="YYYY-MM-DDTHH:mm:ss.000Z"
+              :disabled="isEdit"
             />
-            <div class="form-help">从指定时间开始投递消息</div>
+            <div class="form-help">从指定时间开始投递消息{{ isEdit ? '（不可修改）' : '' }}</div>
           </el-form-item>
         </div>
 
@@ -400,7 +432,7 @@
 import { ref, reactive, computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { ArrowLeft, Delete, Plus } from '@element-plus/icons-vue'
+import { ArrowLeft, Delete, Plus, Lock } from '@element-plus/icons-vue'
 import { useConsumerStore } from '@/stores/consumers'
 import { useJetStreamStore } from '@/stores/jetstreams'
 import { useClusterStore } from '@/stores/clusters'
