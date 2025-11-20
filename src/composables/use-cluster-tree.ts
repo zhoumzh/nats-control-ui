@@ -486,11 +486,22 @@ export function useClusterTree(clusterId: string, clusterFromRoute?: Cluster) {
       const errorInfo = JetStreamErrorHandler.handleAccountError(error, accountNode.name)
       errors.value.set(requestKey, errorInfo)
 
-      // 提取错误信息：优先使用 response.data.error，否则使用 errorInfo.details
-      const errorMessage =
-        error.response?.data?.error ||
-        errorInfo.details ||
-        JetStreamErrorHandler.getUserFriendlyMessage(errorInfo)
+      // 提取错误信息：优先使用处理后的友好信息，如果没有则使用原始错误
+      let errorMessage = errorInfo.message
+      
+      // 如果有更详细的错误信息，将其附加到消息中
+      if (error.response?.data?.error) {
+        const backendError = error.response.data.error
+        // 如果后端错误包含更具体的信息（如账户ID），使用它
+        if (backendError.includes('账户') && backendError.includes('ac_')) {
+          errorMessage = backendError
+        }
+      }
+      
+      // 添加建议操作
+      if (errorInfo.suggestion) {
+        errorMessage = `${errorMessage}。${errorInfo.suggestion}`
+      }
 
       // 只显示当前账户的错误，不影响整个页面
       ElMessage({

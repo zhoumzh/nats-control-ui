@@ -809,12 +809,11 @@ const loadConsumer = async () => {
       form.deliver_group = consumer.deliver_group
       form.rate_limit_bps = consumer.rate_limit > 0 ? consumer.rate_limit : undefined
       form.flow_control = consumer.flow_control
-      // idle_heartbeat 后端返回的是纳秒数，需要转换为字符串格式（如 '5s'）
+      // idle_heartbeat 后端返回的是秒数，需要转换为字符串格式（如 '5s'）
       // 只有在 flow_control 启用且值大于 0 时才设置
       if (consumer.flow_control && consumer.idle_heartbeat && consumer.idle_heartbeat > 0) {
-        // 将纳秒转换为秒，并格式化为字符串
-        const seconds = consumer.idle_heartbeat / 1000000000
-        form.idle_heartbeat = `${seconds}s`
+        // 后端已经返回秒数，直接格式化为字符串
+        form.idle_heartbeat = `${consumer.idle_heartbeat}s`
       }
     }
 

@@ -171,10 +171,11 @@ export class JetStreamErrorHandler {
    */
   static getUserFriendlyMessage(errorInfo: AccountErrorInfo): string {
     const actionMessages = {
-      enable_jetstream: '点击"启用JetStream"按钮进行启用',
-      retry: '点击"重试"按钮重新加载',
+      enable_jetstream: '点击“启用JetStream”按钮进行启用',
+      retry: '点击“重试”按钮重新加载',
       check_permissions: '请联系管理员检查账户权限',
       contact_admin: '如问题持续，请联系技术支持',
+      create_user: '请创建一个管理员用户或激活现有用户',
       none: '',
     }
 
@@ -228,6 +229,8 @@ export class JetStreamErrorHandler {
       '无可用用户',
       '账户下无用户',
       '没有活跃用户',
+      '没有管理员用户',
+      'failed to connect with account',
     ]
     return patterns.some((pattern) => message.toLowerCase().includes(pattern.toLowerCase()))
   }
